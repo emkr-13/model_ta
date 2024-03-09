@@ -19,6 +19,7 @@ nltk.download('stopwords')
 stop_words = set(stopwords.words('indonesian'))
 
 def preprocess_text(text):
+    start_time = time.time()
     if not isinstance(text, str):
         return ''
     # Tokenisasi
@@ -35,6 +36,8 @@ def preprocess_text(text):
     
     # Gabungkan kembali token yang telah diproses menjadi teks
     processed_text = ' '.join(cleaned_tokens)
+    end_time = time.time()
+    print(f"Total waktu yang dibutuhkan: {end_time - start_time} detik untuk preprocess_text")
     return processed_text
 
 def insert_into_sqlite(url, nama_berita, tanggal_berita, processed_text):
