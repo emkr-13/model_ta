@@ -6,10 +6,15 @@ import re
 
 from nltk.tokenize import word_tokenize
 from Sastrawi.StopWordRemover.StopWordRemoverFactory import StopWordRemoverFactory
-
+from Sastrawi.Stemmer.StemmerFactory import StemmerFactory
 # Initialize Sastrawi stopword remover
 stopword_factory = StopWordRemoverFactory()
 stopword_remover = stopword_factory.create_stop_word_remover()
+
+
+# Initialize Sastrawi stemmer
+stemmer_factory = StemmerFactory()
+stemmer = stemmer_factory.create_stemmer()
 
 def preprocess_text(text):
     start_time = time.time()
@@ -24,8 +29,11 @@ def preprocess_text(text):
     # Stopwords removal
     content_without_stopwords = stopword_remover.remove(content_cleaned)
     
+    # Stemming
+    stemmed_text = stemmer.stem(content_without_stopwords)
+    
     # Tokenization
-    tokens = word_tokenize(content_without_stopwords)
+    tokens = word_tokenize(stemmed_text)
     
     # Join the processed tokens back into text
     processed_text = ' '.join(tokens)
@@ -37,7 +45,7 @@ def insert_into_sqlite(url, title, sentimen):
     conn = sqlite3.connect('prepro.db')
     cursor = conn.cursor()
     try:
-        cursor.execute('''INSERT INTO pre_title (url_berita,title,sentimen)
+        cursor.execute('''INSERT INTO pre_title_new (url_berita,title,sentimen)
                           VALUES (?, ?, ?)''', (url, title, sentimen))
         conn.commit()
     except sqlite3.IntegrityError:
@@ -48,7 +56,7 @@ def insert_into_sqlite(url, title, sentimen):
 def get_processed_urls():
     conn = sqlite3.connect('prepro.db')
     cursor = conn.cursor()
-    cursor.execute('''SELECT url_berita FROM pre_title''')
+    cursor.execute('''SELECT url_berita FROM pre_title_new''')
     processed_urls = set(row[0] for row in cursor.fetchall())
     conn.close()
     return processed_urls
