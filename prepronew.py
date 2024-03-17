@@ -7,11 +7,17 @@ import re
 from nltk.tokenize import word_tokenize
 from Sastrawi.StopWordRemover.StopWordRemoverFactory import StopWordRemoverFactory
 from nltk.stem import PorterStemmer
+from Sastrawi.Stemmer.StemmerFactory import StemmerFactory
 
 # Initialize Sastrawi stopword remover
 stopword_factory = StopWordRemoverFactory()
 stopword_remover = stopword_factory.create_stop_word_remover()
 porter_stemmer = PorterStemmer()
+
+
+# Initialize Sastrawi stemmer
+stemmer_factory = StemmerFactory()
+stemmer = stemmer_factory.create_stemmer()
 
 def preprocess_text(text):
     start_time = time.time()
@@ -19,6 +25,12 @@ def preprocess_text(text):
         return ''
     # clean data
     content_cleaned = re.sub(r'ADVERTISEMENT', '', text)
+    content_cleaned = re.sub(r'Detik News', '', content_cleaned)
+    content_cleaned = re.sub(r'CNN News', '', content_cleaned)
+    content_cleaned = re.sub(r'KOMPAS.com', '', content_cleaned)
+    content_cleaned = re.sub(r'Kompas News', '', content_cleaned)
+    content_cleaned = re.sub(r'JAKARTA, KOMPAS.com', '', content_cleaned)
+    content_cleaned = re.sub(r'SEMARANG, KOMPAS.com', '', content_cleaned)
     # Menghapus data karalter
     content_cleaned = re.sub(r'[^a-zA-Z0-9\s]', '', content_cleaned)
     
@@ -28,14 +40,17 @@ def preprocess_text(text):
     # Stopwords removal
     content_without_stopwords = stopword_remover.remove(content_cleaned)
     
-    # Tokenization
-    tokens = word_tokenize(content_without_stopwords)
-    
     # Stemming
-    stemmed_words = [porter_stemmer.stem(token) for token in tokens]
+    stemmed_text = stemmer.stem(content_without_stopwords)
+    
+    # Tokenization
+    tokens = word_tokenize(stemmed_text)
+    
+    # # Stemming
+    # stemmed_words = [porter_stemmer.stem(token) for token in tokens]
     
     # Join the processed tokens back into text
-    processed_text = ' '.join(stemmed_words)
+    processed_text = ' '.join(tokens)
     end_time = time.time()
     print(f"Total time taken: {end_time - start_time} seconds for preprocess_text")
     return processed_text
@@ -44,7 +59,7 @@ def insert_into_sqlite(url, nama_berita, tanggal_berita, processed_text):
     conn = sqlite3.connect('prepro.db')
     cursor = conn.cursor()
     try:
-        cursor.execute('''INSERT INTO pre_content_new (url_berita, nama_berita, tanggal_berita, processed_text)
+        cursor.execute('''INSERT INTO pre_content_cek (url_berita, nama_berita, tanggal_berita, processed_text)
                           VALUES (?, ?, ?, ?)''', (url, nama_berita, tanggal_berita, processed_text))
         conn.commit()
     except sqlite3.IntegrityError:
@@ -55,7 +70,7 @@ def insert_into_sqlite(url, nama_berita, tanggal_berita, processed_text):
 def get_processed_urls():
     conn = sqlite3.connect('prepro.db')
     cursor = conn.cursor()
-    cursor.execute('''SELECT url_berita FROM pre_content_new''')
+    cursor.execute('''SELECT url_berita FROM pre_content_cek''')
     processed_urls = set(row[0] for row in cursor.fetchall())
     conn.close()
     return processed_urls
