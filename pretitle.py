@@ -52,7 +52,7 @@ def insert_into_sqlite(url, title, sentimen):
     conn = sqlite3.connect('prepro.db')
     cursor = conn.cursor()
     try:
-        cursor.execute('''INSERT INTO pre_title_new (url_berita,title,sentimen)
+        cursor.execute('''INSERT INTO pre_title_baru (url_berita,title,sentimen)
                           VALUES (?, ?, ?)''', (url, title, sentimen))
         conn.commit()
     except sqlite3.IntegrityError:
@@ -63,7 +63,7 @@ def insert_into_sqlite(url, title, sentimen):
 def get_processed_urls():
     conn = sqlite3.connect('prepro.db')
     cursor = conn.cursor()
-    cursor.execute('''SELECT url_berita FROM pre_title_new''')
+    cursor.execute('''SELECT url_berita FROM pre_title_baru''')
     processed_urls = set(row[0] for row in cursor.fetchall())
     conn.close()
     return processed_urls
