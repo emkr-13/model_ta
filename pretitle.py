@@ -7,6 +7,7 @@ import re
 from nltk.tokenize import word_tokenize
 from Sastrawi.StopWordRemover.StopWordRemoverFactory import StopWordRemoverFactory
 from Sastrawi.Stemmer.StemmerFactory import StemmerFactory
+from nltk.stem import PorterStemmer
 # Initialize Sastrawi stopword remover
 stopword_factory = StopWordRemoverFactory()
 stopword_remover = stopword_factory.create_stop_word_remover()
@@ -15,6 +16,9 @@ stopword_remover = stopword_factory.create_stop_word_remover()
 # Initialize Sastrawi stemmer
 stemmer_factory = StemmerFactory()
 stemmer = stemmer_factory.create_stemmer()
+
+# Porter
+porter_stemmer = PorterStemmer()
 
 def preprocess_text(text):
     start_time = time.time()
@@ -30,13 +34,16 @@ def preprocess_text(text):
     content_without_stopwords = stopword_remover.remove(content_cleaned)
     
     # Stemming
-    stemmed_text = stemmer.stem(content_without_stopwords)
+    # stemmed_text = stemmer.stem(content_without_stopwords)
     
     # Tokenization
-    tokens = word_tokenize(stemmed_text)
+    tokens = word_tokenize(content_without_stopwords)
+    
+    # # Stemming
+    stemmed_words = [porter_stemmer.stem(token) for token in tokens]
     
     # Join the processed tokens back into text
-    processed_text = ' '.join(tokens)
+    processed_text = ' '.join(stemmed_words)
     end_time = time.time()
     print(f"Total time taken: {end_time - start_time} seconds for preprocess_text")
     return processed_text
