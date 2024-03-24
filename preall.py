@@ -60,12 +60,12 @@ def preprocess_text(text):
     print(f"Total time taken: {end_time - start_time} seconds for preprocess_text")
     return processed_text
 
-def insert_into_sqlite(url, content, sentimen):
+def insert_into_sqlite(url, content, sentimen,title,tanggal,nama_berita):
     conn = sqlite3.connect('prepro.db')
     cursor = conn.cursor()
     try:
-        cursor.execute('''INSERT INTO pre_content (url_berita,content,sentimen)
-                          VALUES (?, ?, ?)''', (url, content, sentimen))
+        cursor.execute('''INSERT INTO pre_all (url_berita,content,sentimen,title,tanggal_berita,nama_berita)
+                          VALUES (?, ?, ?)''', (url, content, sentimen,title,tanggal,nama_berita))
         conn.commit()
     except sqlite3.IntegrityError:
         print(f"URL '{url}' sudah ada dalam database.")
@@ -75,7 +75,7 @@ def insert_into_sqlite(url, content, sentimen):
 def get_processed_urls():
     conn = sqlite3.connect('prepro.db')
     cursor = conn.cursor()
-    cursor.execute('''SELECT url_berita FROM pre_content''')
+    cursor.execute('''SELECT url_berita FROM pre_all''')
     processed_urls = set(row[0] for row in cursor.fetchall())
     conn.close()
     return processed_urls
@@ -93,7 +93,7 @@ def preprocess_and_save_text(row, processed_urls, url_count):
     processed_text = preprocess_text(content)
     
     # Simpan hasil ke dalam SQLite
-    insert_into_sqlite(url, processed_text,row['sentimen'])
+    insert_into_sqlite(url, processed_text,row['sentimen'],row['title'],row['tanggal_berita'],row['nama_berita'])
     print(f"Processed: {url}")
     
     # Meningkatkan jumlah URL yang telah diproses
