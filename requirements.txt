@@ -1,4 +1,6 @@
 nltk==3.8.1
+nltk==3.6.7
 pandas==2.2.1
 PySastrawi==1.2.0
+Sastrawi==1.0.1
 Sastrawi==1.0.1
