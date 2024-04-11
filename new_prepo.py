@@ -72,7 +72,7 @@ def preprocess_text(text):
     content_cleaned = re.sub(r'detikcom', '', content_cleaned)
     content_cleaned = re.sub(r'Halaman', '', content_cleaned)
     # Menghapus data karalter
-    content_cleaned = re.sub(r'[^a-zA-Z0-9\s]', '', content_cleaned)
+    content_cleaned = re.sub(r'[^a-zA-Z0-9\s]+', ' ', content_cleaned)
     # Case folding
     content_cleaned  = content_cleaned.lower()
     # Stopwords removal
