@@ -5,7 +5,7 @@ def process_data_and_save(input_file, output_file):
     new_data = []
     skipped_rows = 0
     for index, row in data.iterrows():
-        if len(row['content'].split()) <= 256:
+        if len(row['content'].split()) <= 280:
             new_data.append(row['content'])
         else:
             skipped_rows += 1
@@ -15,8 +15,8 @@ def process_data_and_save(input_file, output_file):
     print(f"Data processing complete. Skipped {skipped_rows} rows.")
 
 def main():
-    input_file = 'raw_data_baru_content_5000.csv'
-    output_file = 'processed_data_5000.csv'
+    input_file = 'raw_data_baru_content.csv'
+    output_file = 'processed_data_all.csv'
     process_data_and_save(input_file, output_file)
 
 if __name__ == "__main__":
