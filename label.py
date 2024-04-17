@@ -3,14 +3,19 @@ from concurrent.futures import ThreadPoolExecutor
 from transformers import pipeline
 
 def label_sentiment(text):
-    # Analisis sentimen menggunakan model Transformer
-    result = sentiment_analysis(text)
-    # Ambil label sentimen teratas
-    top_sentiment = result[0]
-    label = top_sentiment['label']
-    score = top_sentiment['score']
-    print(label)
-    return label, score
+    try:
+        # Analisis sentimen menggunakan model Transformer
+        result = sentiment_analysis(text)
+        # Ambil label sentimen teratas
+        top_sentiment = result[0]
+        label = top_sentiment['label']
+        score = top_sentiment['score']
+        print(label,len(text.split()))
+        return label, score
+    except Exception as e:
+        print(f"Error occurred for text: {text}")
+        print(f"Error message: {str(e)}")
+        return None, None
 
 def label_sentiment_multithread(text_list, max_workers=5):  # default 5 thread jika tidak disebutkan
     with ThreadPoolExecutor(max_workers=max_workers) as executor:

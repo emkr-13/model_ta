@@ -5,7 +5,7 @@ def process_data_and_save(input_file, output_file):
     new_data = []
     skipped_rows = 0
     for index, row in data.iterrows():
-        if len(row['content'].split()) <= 280:
+        if len(row['content'].split()) <= 250:
             new_data.append(row['content'])
         else:
             skipped_rows += 1
