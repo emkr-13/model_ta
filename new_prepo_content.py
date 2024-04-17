@@ -102,10 +102,10 @@ def preprocess_texts_parallel(data):
     with concurrent.futures.ThreadPoolExecutor(max_workers=8) as executor:
         results = list(executor.map(preprocess_and_save_text, data))
     df = pd.DataFrame({'processed_content': results})
-    df.to_csv('lda_content.csv', index=False)
+    df.to_csv('lda_content_10000.csv', index=False)
     end_time = time.time()
     print(f"Total time taken: {end_time - start_time} seconds")
 
 if __name__ == "__main__":
-    dataset = pd.read_csv('raw_data_baru_content.csv')
+    dataset = pd.read_csv('raw_data_baru_content_10000.csv')
     preprocess_texts_parallel(dataset['content'])
