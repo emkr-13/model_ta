@@ -13,12 +13,12 @@ def calculateSimilarity(sentence, document):
 def summarize_sentences(sentence):
     temp_doc = [s for s in sentences if s != sentence]
     score = calculateSimilarity(sentence, temp_doc)
-    print(sentence,score)
+    print(score)
     return sentence, score
 
 if __name__ == '__main__':
-    data = pd.read_csv('lda_content_10000.csv')
-    sentences = data['processed_content'].tolist()
+    data = pd.read_csv('raw_data_baru_1000.csv')
+    sentences = data['content'].tolist()
 
     with Pool() as pool:
         scores = dict(pool.map(summarize_sentences, sentences))
@@ -44,5 +44,5 @@ if __name__ == '__main__':
     summary_sentences = [sentence.lstrip(' ') for sentence in summarySet]
 
     summary_df = pd.DataFrame({'Summary': summary_sentences})
-    summary_df.to_csv('summary.csv', index=False)
+    summary_df.to_csv('summary_1000.csv', index=False)
     print('Summary saved to summary.csv')
