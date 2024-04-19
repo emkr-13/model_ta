@@ -23,7 +23,7 @@ def label_sentiment_multithread(text_list, max_workers=5):  # default 5 thread j
     return list(results)
 
 def main():
-    data = pd.read_csv('processed_data_all.csv')
+    data = pd.read_csv('processed_data_baru_lda.csv')
 
     # Load model analisis sentimen bahasa Indonesia dengan tiga kelas sentimen
     global sentiment_analysis

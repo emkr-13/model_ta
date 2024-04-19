@@ -6,6 +6,10 @@ import requests
 API_URL = "https://api-inference.huggingface.co/models/cahya/bert2gpt-indonesian-summarization"
 headers = {"Authorization": "Bearer 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"}
 
+# Define the maximum requests per minute and the time interval to spread the requests
+MAX_REQUESTS_PER_MINUTE = 1000
+REQUEST_SPREAD_INTERVAL = 60 / MAX_REQUESTS_PER_MINUTE
+
 def load_data(file_path):
     try:
         start_load = time.time()
@@ -19,13 +23,14 @@ def load_data(file_path):
 
 def summarize_text(text):
     try:
+        start_save = time.time()
         payload = {"inputs": text}
         response = requests.post(API_URL, headers=headers, json=payload)
         response.raise_for_status()  # Raise an exception for any HTTP error
         output = response.json()
-        # print(output)
         summary_text = output[0].get('summary_text')  # Extract 'summary_text' from the response
-        print(summary_text)  # Print the summarized text, not the function
+        end_save = time.time()
+        print("time use for in {:.2f} seconds.".format(end_save - start_save))
         return summary_text
     except Exception as e:
         print("Error occurred while summarizing text:", e)
@@ -43,8 +48,8 @@ def save_data(data, file_path):
 
 def main():
     start_load = time.time()
-    file_path = 'raw_data_baru_100.csv'
-    output_file_path = 'summarized_data_100.csv'
+    file_path = 'processed_data_baru_300.csv'
+    output_file_path = 'summarized_data_30000.csv'
 
     # Load the data
     data = load_data(file_path)
@@ -52,11 +57,21 @@ def main():
         return
 
     # Create a ThreadPoolExecutor for multithreading
-    with ThreadPoolExecutor(max_workers=3) as executor:
+    with ThreadPoolExecutor(max_workers=8) as executor:
         try:
             start_process = time.time()
-            # Use map to apply the summarize_text function to each text in the dataframe
-            summarized_texts = list(executor.map(summarize_text, data['content']))
+            summarized_texts = []
+            
+            # Control the rate of requests
+            requests_count = 0
+            for text in data['content']:
+                if requests_count > 0 and requests_count % MAX_REQUESTS_PER_MINUTE == 0:
+                    time.sleep(REQUEST_SPREAD_INTERVAL)  # Spread the requests
+                summary = summarize_text(text)
+                if summary is not None:
+                    summarized_texts.append(summary)
+                requests_count += 1
+            
             end_process = time.time()
             print("Texts summarized successfully in {:.2f} seconds.".format(end_process - start_process))
         except Exception as e:
