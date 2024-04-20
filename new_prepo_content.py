@@ -62,6 +62,7 @@ def preprocess_text(text):
     content_cleaned=content_cleaned.replace("TASIKMALAYA, KOMPAS.com", " ")
     content_cleaned=content_cleaned.replace("TANGERANG, KOMPAS.com", " ")
     content_cleaned=content_cleaned.replace("Baca juga", " ")
+    content_cleaned=content_cleaned.replace("selengkapnya", "")
     content_cleaned = re.sub(r'Detik News', ' ', content_cleaned)
     content_cleaned = re.sub(r'CNN News', ' ', content_cleaned)
     content_cleaned = re.sub(r'KOMPAS.com', ' ', content_cleaned)
@@ -103,7 +104,7 @@ def preprocess_texts_parallel(data):
     with concurrent.futures.ThreadPoolExecutor(max_workers=8) as executor:
         results = list(executor.map(preprocess_and_save_text, data))
     df = pd.DataFrame({'processed_content': results})
-    df.to_csv('lda_content_all_new.csv', index=False)
+    df.to_csv('data_baru_all.csv', index=False)
     end_time = time.time()
     print(f"Total time taken: {end_time - start_time} seconds")
 
