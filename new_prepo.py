@@ -104,10 +104,10 @@ def preprocess_texts_parallel(data):
         results = list(executor.map(preprocess_and_save_text, data))
     processed_texts, sentiments = zip(*results)
     df = pd.DataFrame({'content': processed_texts, 'sentimen': sentiments})
-    df.to_csv('sentiment_15000.csv', index=False)
+    df.to_csv('filtered_coba_sentiment_clean_all.csv', index=False)
     end_time = time.time()
     print(f"Total waktu yang dibutuhkan: {end_time - start_time} detik")
 
 if __name__ == "__main__":
-    dataset = pd.read_csv('sampled_label_15000.csv')
+    dataset = pd.read_csv('filtered_all_sentiment.csv')
     preprocess_texts_parallel(dataset.to_dict('records'))
