@@ -15,8 +15,8 @@ def process_data_and_save(input_file, output_file):
     print(f"Data processing complete. Skipped {skipped_rows} rows.")
 
 def main():
-    input_file = 'lda_content.csv'
-    output_file = 'processed_data_baru_lda.csv'
+    input_file = 'data_baru_all.csv'
+    output_file = 'data_baru_banget.csv'
     process_data_and_save(input_file, output_file)
 
 if __name__ == "__main__":

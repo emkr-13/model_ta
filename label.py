@@ -45,7 +45,7 @@ def main():
     data['sentiment_label'], data['sentiment_score'] = zip(*labeled_data)
 
     # Simpan data yang telah dilabeli ke dalam file CSV
-    data.to_csv('label_all.csv', index=False)
+    data.to_csv('label_all_beda.csv', index=False)
 
 if __name__ == "__main__":
     main()
