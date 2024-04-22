@@ -109,5 +109,5 @@ def preprocess_texts_parallel(data):
     print(f"Total time taken: {end_time - start_time} seconds")
 
 if __name__ == "__main__":
-    dataset = pd.read_csv('raw_data_baru_content.csv')
+    dataset = pd.read_csv('sampled_label_9000.csv')
     preprocess_texts_parallel(dataset['content'])
