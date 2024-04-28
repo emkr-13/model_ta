@@ -10,7 +10,8 @@ def label_sentiment(text):
         top_sentiment = result[0]
         label = top_sentiment['label']
         score = top_sentiment['score']
-        print(label,len(text.split()))
+        # print(label,len(text.split()))
+        print(label,score)
         return label, score
     except Exception as e:
         print(f"Error occurred for text: {text}")
@@ -27,7 +28,7 @@ def main():
 
     # Load model analisis sentimen bahasa Indonesia dengan tiga kelas sentimen
     global sentiment_analysis
-    sentiment_analysis = pipeline("text-classification", model="crypter70/IndoBERT-Sentiment-Analysis")
+    sentiment_analysis = pipeline("text-classification", model="taufiqdp/indonesian-sentiment")
 
     # Bagi data menjadi batch agar dapat diproses menggunakan multi-threading
     batch_size = 1000
