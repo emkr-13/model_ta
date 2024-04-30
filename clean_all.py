@@ -97,24 +97,24 @@ def preprocess_text(text):
 def preprocess_and_save_text(row):
     content = row['content']
     processed_text = preprocess_text(content)
-    return processed_text, row['title'],row['content'],row['news_published_at'],row['url'],row['asal_berita']
+    return processed_text, row['title'],row['content'],row['tanggal_berita'],row['link_berita'],row['asal_berita']
 
 def preprocess_texts_parallel(data):
     start_time = time.time()
     with concurrent.futures.ThreadPoolExecutor(max_workers=8) as executor:
         results = list(executor.map(preprocess_and_save_text, data))
-    processed_texts, title, content,news_published_at,url,asal_berita= zip(*results)
+    processed_texts, title, content,tanggal_berita,link_berita,asal_berita= zip(*results)
     df = pd.DataFrame({'title': title,
                        'content': content,
-                       'news_published_at':news_published_at,
+                       'tanggal_berita':tanggal_berita,
                        'content_clean': processed_texts,
-                       'url':url,
+                       'link_berita':link_berita,
                        'asal_berita':asal_berita
                        })
-    df.to_csv('online_news_all_clean.csv', index=False)
+    df.to_csv('online_news_50000_clean_all.csv', index=False)
     end_time = time.time()
     print(f"Total waktu yang dibutuhkan: {end_time - start_time} detik")
 
 if __name__ == "__main__":
-    dataset = pd.read_csv('online_news_all.csv')
+    dataset = pd.read_csv('online_news_50000_all.csv')
     preprocess_texts_parallel(dataset.to_dict('records'))
