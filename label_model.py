@@ -6,7 +6,7 @@ from concurrent.futures import ThreadPoolExecutor
 data = pd.read_csv('online_news_all_clean.csv')
 
 # Load the model data
-loaded_model_data = joblib.load('Sentimen/logistic_regression_with_vectorizer.pkl')
+loaded_model_data = joblib.load('Sentimen/gabungan_4model.pkl')
 
 # Extract model, vectorizer, and label encoder from loaded data
 loaded_model = loaded_model_data['model']
@@ -48,4 +48,4 @@ predicted_sentiments = pd.concat(results)
 data['sentiment)'] = predicted_sentiments
 
 # Save the updated dataframe to a new CSV file
-data.to_csv('predicted_sentiments_online_news.csv', index=False)
+data.to_csv('predicted_sentiments_online_news_model4.csv', index=False)
