@@ -11,7 +11,7 @@ def label_sentiment(text):
         label = top_sentiment['label']
         score = top_sentiment['score']
         # print(label,len(text.split()))
-        print(label,score)
+        print(label,score,len(text.split()))
         return label, score
     except Exception as e:
         print(f"Error occurred for text: {text}")
@@ -24,7 +24,7 @@ def label_sentiment_multithread(text_list, max_workers=5):  # default 5 thread j
     return list(results)
 
 def main():
-    data = pd.read_csv('processed_data_all.csv')
+    data = pd.read_csv('data_prelabel_all.csv')
 
     # Load model analisis sentimen bahasa Indonesia dengan tiga kelas sentimen
     global sentiment_analysis
@@ -43,10 +43,10 @@ def main():
         labeled_data.extend(labels)
 
     # Memasukkan hasil label sentimen ke dalam DataFrame
-    data['sentiment_label'], data['sentiment_score'] = zip(*labeled_data)
+    data['sentimen'], data['sentimen_score'] = zip(*labeled_data)
 
     # Simpan data yang telah dilabeli ke dalam file CSV
-    data.to_csv('label_data_baru.csv', index=False)
+    data.to_csv('data_content_label.csv', index=False)
 
 if __name__ == "__main__":
     main()
