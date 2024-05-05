@@ -10,7 +10,6 @@ def label_sentiment(text):
         top_sentiment = result[0]
         label = top_sentiment['label']
         score = top_sentiment['score']
-        # print(label,len(text.split()))
         print(label,score,len(text.split()))
         return label, score
     except Exception as e:
@@ -25,26 +24,21 @@ def label_sentiment_multithread(text_list, max_workers=5):  # default 5 thread j
 
 def main():
     data = pd.read_csv('data_prelabel_all.csv')
-
     # Load model analisis sentimen bahasa Indonesia dengan tiga kelas sentimen
     global sentiment_analysis
     sentiment_analysis = pipeline("text-classification", model="taufiqdp/indonesian-sentiment")
-
     # Bagi data menjadi batch agar dapat diproses menggunakan multi-threading
     batch_size = 1000
     num_batches = len(data) // batch_size + 1
     batches = [data[i*batch_size:(i+1)*batch_size] for i in range(num_batches)]
-
     # Melabeli sentimen untuk setiap batch menggunakan multi-threading
     labeled_data = []
     for batch in batches:
         texts = batch['content'].tolist()
         labels = label_sentiment_multithread(texts, max_workers=10)  # Misalnya, menggunakan 10 thread
         labeled_data.extend(labels)
-
     # Memasukkan hasil label sentimen ke dalam DataFrame
     data['sentimen'], data['sentimen_score'] = zip(*labeled_data)
-
     # Simpan data yang telah dilabeli ke dalam file CSV
     data.to_csv('data_content_label.csv', index=False)
 
