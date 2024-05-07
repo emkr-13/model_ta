@@ -13,7 +13,10 @@ data = pd.read_csv('data_pemilu.csv')
 documents = data['content_clean'].str.split()
 
 # Create a TF-IDF vectorizer
-tfidf_vectorizer = TfidfVectorizer()
+tfidf_vectorizer = TfidfVectorizer(min_df=1,
+                                 norm='l2',
+                                 smooth_idf=True,
+                                 use_idf=True)
 
 # Fit and transform the data
 tfidf_matrix = tfidf_vectorizer.fit_transform(data['content_clean'])
