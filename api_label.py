@@ -3,7 +3,7 @@ from concurrent.futures import ThreadPoolExecutor
 import requests
 
 API_URL = "https://api-inference.huggingface.co/models/ayameRushia/bert-base-indonesian-1.5G-sentiment-analysis-smsa"
-headers = {"Authorization": "Bearer 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"}
+headers = {"Authorization": "masukan token"}
 
 def query(payload):
     response = requests.post(API_URL, headers=headers, json=payload)

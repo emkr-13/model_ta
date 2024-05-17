@@ -4,7 +4,7 @@ import time
 import requests
 
 API_URL = "https://api-inference.huggingface.co/models/cahya/bert2gpt-indonesian-summarization"
-headers = {"Authorization": "Bearer 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"}
+headers = {"Authorization": "masukan token"}
 
 # Define the maximum requests per minute and the time interval to spread the requests
 MAX_REQUESTS_PER_MINUTE = 1000
