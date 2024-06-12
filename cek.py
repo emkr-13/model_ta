@@ -15,8 +15,8 @@ def process_data_and_save(input_file, output_file):
     print(f"Data processing complete. Skipped {skipped_rows} rows.")
 
 def main():
-    input_file = 'raw_data_content.csv'
-    output_file = 'data_prelabel_all.csv'
+    input_file = 'Data_Pemilu.csv'
+    output_file = 'data_pemilu_filter.csv'
     process_data_and_save(input_file, output_file)
 
 if __name__ == "__main__":

@@ -23,7 +23,7 @@ def label_sentiment_multithread(text_list, max_workers=5):  # default 5 thread j
     return list(results)
 
 def main():
-    data = pd.read_csv('data_prelabel_all.csv')
+    data = pd.read_csv('data_pemilu_filter.csv')
     # Load model analisis sentimen bahasa Indonesia dengan tiga kelas sentimen
     global sentiment_analysis
     sentiment_analysis = pipeline("text-classification", model="taufiqdp/indonesian-sentiment")
@@ -40,7 +40,7 @@ def main():
     # Memasukkan hasil label sentimen ke dalam DataFrame
     data['sentimen'], data['sentimen_score'] = zip(*labeled_data)
     # Simpan data yang telah dilabeli ke dalam file CSV
-    data.to_csv('data_content_label.csv', index=False)
+    data.to_csv('data_pemilu_label.csv', index=False)
 
 if __name__ == "__main__":
     main()
