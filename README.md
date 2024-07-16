@@ -1,6 +1,6 @@
 # Model Tugas Ahkir
 
-Repo merupakaan model untuk sentimen klasfikasi indonesia dengan mengunaakaan berbagai alogritma klasfikasi antara lain naiye bayes, svm , lr dan random forest dan juga ada topik modeling dalam bentuk LDA dan LSA untuk csv tidak bisa di uploud karena file lebih 100 mb jadi susah untuk dataset jadi bisa di cek kedalam huggeface ini https://huggingface.co/datasets/emkr-13/Dataset_Berita_Indo dan ini https://huggingface.co/datasets/emkr-13/Dataset_Online_News_45000 dataset sama hanya beda model yang di pakai aja 
+Repo merupakaan model untuk sentimen klasfikasi indonesia dengan mengunaakaan berbagai alogritma klasfikasi antara lain naiye bayes, svm , lr dan random forest dan juga ada topik modeling dalam bentuk LDA dan LSA untuk csv tidak bisa di uploud karena file lebih 100 mb jadi susah untuk dataset jadi bisa di cek untuk link berikut https://bit.ly/4cMIAQD dataset sama hanya beda model yang di pakai aja 
 
 ## Authors
 
